@@ -1,26 +1,23 @@
 (ns mini-lord.system
-  (:require [ring.adapter.jetty :as jetty]))
+  (:require [ring.adapter.jetty :as jetty]
+            [com.stuartsierra.component :as component]))
 
 (defn handler [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body "Hello World"})
 
-(defn system
-  "returns a new instance of the whole app"
-  []
-  {:handler handler
-   :server {:port 3000}})
+(defrecord Server [handler server inst]
+  component/Lifecycle
+  (start [this]
+    (if inst this
+      (assoc this :inst (jetty/run-jetty handler server))))
+  (stop [this]
+    (if inst (assoc this :inst (.stop inst)) this)))
 
-(defn start
-  "Performs side effects to initialize the system, acquire resources,
-  and start it running. Returns an updated instance of the system."
-  [system]
-  (jetty/run-jetty handler (:server system)))
+(def s (atom (map->Server {:handler handler :server {:port 3000 :join? false}})))
 
-(defn stop
-  "Performs side effects to shut down the system and release its
-  resources. Returns an updated instance of the system."
-  [system]
-  (println "stop"))
+(do @s)
 
+(swap! s component/start)
+(swap! s component/stop)
