@@ -1,14 +1,7 @@
-# mini-lord
+# Mini-Lord
 
-A Clojure library designed to ... well, that part is up to you.
-
-## Usage
-
-FIXME
+A very simple clojure workflow influenced by [Stuart Sierra](http://thinkrelevance.com/blog/2013/06/04/clojure-workflow-reloaded).
 
 ## License
 
-Copyright © 2016 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License.
