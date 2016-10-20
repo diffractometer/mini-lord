@@ -7,16 +7,6 @@
          [mini-lord.http.index :refer [handler]]
          [com.stuartsierra.component :as component]))
 
-(defn email [from subject html to]
-  (-> (SendGrid$Email.)
-     (.setFrom from)
-     (.setSubject subject)
-     (.setHtml html)
-     (.addTo to)))
-
-(let [sendgrid (SendGrid.(System/getenv "SENDGRID_API_KEY"))]
-  (.send sendgrid (email "hunter@hunterhusar.net" "subject" "html" "hhusar@openmarketshealth.com")))
-
 (defrecord Server [handler server inst]
  component/Lifecycle
  (start [this]
